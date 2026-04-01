@@ -12,6 +12,9 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "docker:build": "docker build -t api-gateway:latest .",
+    "docker:run": "docker run -d --rm -p 3001:3001 --env-file .env api-gateway:latest",
+    "k8s:deploy": "eval $(minikube docker-env) && docker build -t api-gateway:latest . && kubectl rollout restart deployment api-gateway-deployment",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -21,8 +24,10 @@
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "http-proxy-middleware": "^3.0.5",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
