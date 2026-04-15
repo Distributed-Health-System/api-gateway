@@ -43,8 +43,8 @@ jobs:
       - name: Build Docker image (no push on PR)
         uses: docker/build-push-action@v5
         with:
-          context: ./api-gateway
-          file: ./api-gateway/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: ${{ github.event_name == 'push' }}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:latest,${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:${{ env.SHORT_SHA }}
         env:
