@@ -1,10 +1,16 @@
 node_modules
 dist
-.git
-.gitignore
 Dockerfile
 npm-debug.log
 README.md
 test
 coverage
 .env
+*.md# 
+#Tooling & IDE
+.git
+.gitignore
+.github
+.dockerignore
+.vscode
+.idea
