@@ -25,7 +25,7 @@ export class AppModule implements NestModule {
       // '/telemedicine',
       // '/notifications',
       // '/symptom-checker',
-      { path: '*', method: RequestMethod.ALL },
+      { path: '(.*)', method: RequestMethod.ALL },
     );
   }
 }
