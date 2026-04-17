@@ -2,7 +2,7 @@ import {
   Injectable,
   NestMiddleware,
   Logger,
-  OnModuleInit,
+  // OnModuleInit,
 } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { PUBLIC_ROUTES } from '../auth/public-routes.config';
@@ -11,12 +11,23 @@ import { ProxyRegistry } from './proxy-registry';
 import { TokenVerifier } from './token-verifier';
 
 @Injectable()
-export class ProxyMiddleware implements NestMiddleware, OnModuleInit {
+export class ProxyMiddleware implements NestMiddleware {
   private readonly logger = new Logger(ProxyMiddleware.name);
   private readonly registry = new ProxyRegistry(this.logger);
   private readonly tokenVerifier = new TokenVerifier();
 
-  onModuleInit() {
+  // export class ProxyMiddleware implements NestMiddleware , OnModuleInit{
+  // private readonly logger = new Logger(ProxyMiddleware.name);
+  // private readonly registry = new ProxyRegistry(this.logger);
+  // private readonly tokenVerifier = new TokenVerifier();
+
+  // onModuleInit() {
+  //   this.registry.build();
+  // }
+
+  constructor() {
+    // CRITICAL FIX: NestJS does not execute lifecycle hooks (like onModuleInit)
+    // for Middlewares. We must build the registry synchronously here.
     this.registry.build();
   }
 
