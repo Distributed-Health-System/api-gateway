@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "additionalDirectories": [
+      "/Users/lakindu/Developer/Distributed-Health-System/clinical-services/doctor-service/src/doctor/infrastructure/database/mongo/repositories",
+      "/Users/lakindu/Developer/Distributed-Health-System/clinical-services/doctor-service/src/doctor/application/services",
+      "/Users/lakindu/Developer/Distributed-Health-System/clinical-services/doctor-service/src/doctor"
+    ]
+  }
+}
