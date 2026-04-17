@@ -1,11 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { json } from 'express';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const cookieParser = require('cookie-parser');
 import { AppModule } from './app.module';
 
 const PROXY_PREFIXES = ['/patients', '/doctors', '/appointments', '/telemedicine', '/notifications', '/symptom-checker'];
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bodyParser: false });
+
+  app.use(cookieParser());
 
   app.use((req: any, res: any, next: any) => {
     const isProxy = PROXY_PREFIXES.some((p) => req.path.startsWith(p));
