@@ -1,6 +1,7 @@
 interface PublicRoute {
   method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
   path: string;
+  exact?: boolean;
 }
 
 export const PUBLIC_ROUTES: PublicRoute[] = [

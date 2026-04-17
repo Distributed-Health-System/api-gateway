@@ -2,7 +2,7 @@ import {
   Injectable,
   NestMiddleware,
   Logger,
-  OnModuleInit,
+  // OnModuleInit,
 } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { PUBLIC_ROUTES } from '../auth/public-routes.config';
@@ -11,12 +11,23 @@ import { ProxyRegistry } from './proxy-registry';
 import { TokenVerifier } from './token-verifier';
 
 @Injectable()
-export class ProxyMiddleware implements NestMiddleware, OnModuleInit {
+export class ProxyMiddleware implements NestMiddleware {
   private readonly logger = new Logger(ProxyMiddleware.name);
   private readonly registry = new ProxyRegistry(this.logger);
   private readonly tokenVerifier = new TokenVerifier();
 
-  onModuleInit() {
+  // export class ProxyMiddleware implements NestMiddleware , OnModuleInit{
+  // private readonly logger = new Logger(ProxyMiddleware.name);
+  // private readonly registry = new ProxyRegistry(this.logger);
+  // private readonly tokenVerifier = new TokenVerifier();
+
+  // onModuleInit() {
+  //   this.registry.build();
+  // }
+
+  constructor() {
+    // CRITICAL FIX: NestJS does not execute lifecycle hooks (like onModuleInit)
+    // for Middlewares. We must build the registry synchronously here.
     this.registry.build();
   }
 
@@ -43,15 +54,16 @@ export class ProxyMiddleware implements NestMiddleware, OnModuleInit {
       return next();
     }
 
-    const isPublic = PUBLIC_ROUTES.some(
-      (r) => r.method === req.method && req.originalUrl.startsWith(r.path),
-    );
+    const urlWithoutQuery = req.originalUrl.split('?')[0];
+    const isPublic = PUBLIC_ROUTES.some((r) => {
+      if (r.method !== req.method) return false;
+      return r.exact
+        ? urlWithoutQuery === r.path
+        : urlWithoutQuery.startsWith(r.path);
+    });
 
     if (!isPublic) {
-      const authHeader = req.headers['authorization'];
-      const token = authHeader?.startsWith('Bearer ')
-        ? authHeader.slice(7)
-        : null;
+      const token = req.cookies?.accessToken as string | undefined;
 
       if (!token) {
         res.status(401).json({ message: 'Missing access token' });
@@ -63,6 +75,7 @@ export class ProxyMiddleware implements NestMiddleware, OnModuleInit {
         req.headers['x-user-id'] = user.sub;
         req.headers['x-user-role'] =
           user.realm_access?.roles.find((r) => APP_ROLES.includes(r)) ?? '';
+        req.headers['authorization'] = `Bearer ${token}`;
       } catch {
         res.status(401).json({ message: 'Invalid or expired token' });
         return;

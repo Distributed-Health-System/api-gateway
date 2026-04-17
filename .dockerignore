@@ -1,5 +1,6 @@
 node_modules
 dist
+
 Dockerfile
 npm-debug.log
 README.md

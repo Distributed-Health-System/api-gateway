@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -13,15 +18,14 @@ import { ProxyMiddleware } from './proxy/proxy.middleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(ProxyMiddleware)
-      .forRoutes(
-        '/patients',
-        '/doctors',
-        '/appointments',
-        '/telemedicine',
-        '/notifications',
-        '/symptom-checker',
-      );
+    consumer.apply(ProxyMiddleware).forRoutes(
+      // '/patients',
+      // '/doctors',
+      // '/appointments',
+      // '/telemedicine',
+      // '/notifications',
+      // '/symptom-checker',
+      { path: '(.*)', method: RequestMethod.ALL },
+    );
   }
 }
