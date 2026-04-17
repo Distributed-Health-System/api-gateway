@@ -1,7 +1,6 @@
 node_modules
 dist
-.git
-.gitignore
+
 Dockerfile
 npm-debug.log
 README.md
@@ -9,7 +8,7 @@ test
 coverage
 .env
 *.md# 
-Tooling & IDE
+#Tooling & IDE
 .git
 .gitignore
 .github

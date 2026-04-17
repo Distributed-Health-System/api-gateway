@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/lakindu/Developer/Distributed-Health-System/clinical-services/doctor-service/src/**)",
+      "mcp__postman__*",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('mcpServers', {}\\), indent=2\\)\\)\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); items=[x for x in d if 'postman' in str\\(x\\).lower\\(\\)]; print\\(json.dumps\\(items, indent=2\\)\\)\")"
+    ],
+    "additionalDirectories": [
+      "/Users/lakindu/Developer/Distributed-Health-System/clinical-services/doctor-service/src/doctor/presentation/guards",
+      "/Users/lakindu/Developer/Distributed-Health-System/clinical-services/doctor-service/src/doctor/presentation/decorators"
+    ]
+  },
+  "defaultMode": "bypassPermissions",
+  "mcpServers": {
+    "postman": {
+      "type": "http",
+      "url": "https://mcp.postman.com/mcp"
+    }
+  }
+}
