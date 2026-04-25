@@ -21,7 +21,7 @@ export class AppModule implements NestModule {
     consumer.apply(ProxyMiddleware).forRoutes(
       // '/patients',
       // '/doctors',
-      // '/appointments',
+      // '/appointments',ggkbyiuv
       // '/telemedicine',
       // '/notifications',
       // '/symptom-checker',
