@@ -17,7 +17,12 @@ async function bootstrap() {
     json()(req, res, next);
   });
 
-  app.enableCors({ origin: 'http://localhost:3000', credentials: true });
+  // CORS_ORIGIN is set via ConfigMap. In prod this should be the CloudFront URL
+  // (and optionally the Vercel frontend URL). Falls back to localhost for local dev.
+  const allowedOrigins = (process.env.CORS_ORIGIN ?? 'http://localhost:3000')
+    .split(',')
+    .map((o) => o.trim());
+  app.enableCors({ origin: allowedOrigins, credentials: true });
   await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();
